@@ -1,0 +1,8 @@
+flask
+twilio
+langchain
+langchain-community
+langchain-openai
+openai==0.28.0
+faiss-cpu
+python-dotenv

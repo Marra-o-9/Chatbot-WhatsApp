@@ -1,0 +1,7 @@
+# Ignorar dados locais de conhecimento
+data/
+
+# Ignorar ambientes virtuais
+venv/
+.env
+__pycache__/
