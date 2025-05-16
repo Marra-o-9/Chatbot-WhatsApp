@@ -3,7 +3,9 @@ services:
     type: web
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python chatbot_whatsapp.py"
+    startCommand: "python main.py"
     envVars:
       - key: OPENAI_API_KEY
-        sync: true
+        sync: false
+      - key: OPENAI_MODEL
+        sync: false
