@@ -1,6 +1,6 @@
 # Ignorar dados locais de conhecimento
-/data/*
-!/data/.gitkeep
+#/data/*
+#/data/.gitkeep
 
 # Ignorar ambientes virtuais
 venv/
