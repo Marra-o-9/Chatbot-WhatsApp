@@ -2,7 +2,7 @@
 
 # Importa as bibliotecas necessárias
 import os
-from flask import Flask, request
+from flask import Flask, request, Response
 from twilio.twiml.messaging_response import MessagingResponse
 from langchain.chains import RetrievalQA
 from langchain_community.vectorstores import FAISS
@@ -22,8 +22,13 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 app = Flask(__name__)
 
 # Indexa documentos para RAG (chatbot informativo)
-loader = TextLoader("data/data.txt")
-raw_docs = loader.load()
+try:
+    loader = TextLoader("data/data.txt")
+    raw_docs = loader.load()
+except Exception as e:
+    print("❌ Erro ao carregar data.txt:", e)
+    raw_docs = []
+
 splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 docs = splitter.split_documents(raw_docs)
 
@@ -80,7 +85,7 @@ def webhook():
             )
             resposta = qa_chain.run(pergunta_com_contexto)
             msg.body(resposta + "\n\nDigite *VOLTAR* para retornar ao menu.")
-        return str(resp)
+        return Response(str(resp), mimetype="application/xml")
 
     # Lógica do menu principal e submenus
     if estado == "menu":
@@ -106,7 +111,7 @@ def webhook():
             )
         else:
             msg.body("❌ Opção inválida. Por favor, escolha uma das opções abaixo:\n\n" + menu_principal())
-        return str(resp)
+        return Response(str(resp), mimetype="application/xml")
 
     # Lógica para submenu: cobertura de eventos
     if estado == "cobertura_eventos":
@@ -132,7 +137,7 @@ def webhook():
             msg.body("🔙 Voltando ao menu principal...\n\n" + menu_principal())
         else:
             msg.body("❌ Opção inválida. Escolha 1 ou 2, ou digite *VOLTAR*.")
-        return str(resp)
+        return Response(str(resp), mimetype="application/xml")
 
     # Lógica para submenu: congresso & feiras
     if estado == "congresso_feiras":
@@ -147,7 +152,7 @@ def webhook():
             msg.body("🔙 Voltando ao menu anterior...\n\n1 - Congresso & Feiras\n2 - Speakers")
         else:
             msg.body("❌ Opção inválida. Escolha 1, 2 ou 3, ou digite *VOLTAR*.")
-        return str(resp)
+        return Response(str(resp), mimetype="application/xml")
 
     # Lógica para submenu: speakers
     if estado == "speakers":
@@ -160,9 +165,9 @@ def webhook():
             msg.body("🔙 Voltando ao menu anterior...\n\n1 - Congresso & Feiras\n2 - Speakers")
         else:
             msg.body("❌ Opção inválida. Escolha 1 ou 2, ou digite *VOLTAR*.")
-        return str(resp)
+        return Response(str(resp), mimetype="application/xml")
 
-    return str(resp)
+    return Response(str(resp), mimetype="application/xml")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
