@@ -3,6 +3,7 @@ twilio
 langchain
 langchain-community
 langchain-openai
-openai==0.28.0
+openai
 faiss-cpu
 python-dotenv
+tiktoken
