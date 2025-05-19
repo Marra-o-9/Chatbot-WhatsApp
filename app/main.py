@@ -18,8 +18,11 @@ def tratar_ia(incoming_msg, user_number):
         "Responda com clareza e objetividade como um especialista. "
         f"Pergunta do cliente: {incoming_msg}"
     )
-    resposta = qa_chain.run(prompt)
-    return resposta + "\n\nDigite *VOLTAR* para retornar ao menu."
+    resposta = qa_chain.invoke({"query": prompt})
+    return resposta["result"] + "\n\nDigite *VOLTAR* para retornar ao menu."
+
+def home():
+    return "🚀 E-Vitrine Chatbot API Online", 200
 
 def webhook():
     incoming_msg = request.values.get("Body", "").strip()
