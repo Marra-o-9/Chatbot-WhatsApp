@@ -3,7 +3,7 @@
 from flask import request
 from twilio.twiml.messaging_response import MessagingResponse
 from .menus import *
-from .states import get_state, set_state
+from .states import get_state, set_state, set_rota
 from .rag import iniciar_rag
 
 qa_chain = iniciar_rag()
@@ -18,11 +18,8 @@ def tratar_ia(incoming_msg, user_number):
         "Responda com clareza e objetividade como um especialista. "
         f"Pergunta do cliente: {incoming_msg}"
     )
-    resposta = qa_chain.invoke({"query": prompt})
-    return resposta["result"] + "\n\nDigite *VOLTAR* para retornar ao menu."
-
-def home():
-    return "🚀 E-Vitrine Chatbot API Online", 200
+    resposta = qa_chain.invoke({"query": prompt})["result"]
+    return resposta + "\n\nDigite *VOLTAR* para retornar ao menu."
 
 def webhook():
     incoming_msg = request.values.get("Body", "").strip()
@@ -44,8 +41,10 @@ def webhook():
             set_state(user_number, "cobertura_eventos")
             msg.body(menu_cobertura_eventos())
         elif incoming_msg == "2":
+            set_state(user_number, "menu")  # não queremos registrar nada
             msg.body("🩺 Ajudamos médicos a se posicionarem de forma estratégica nas redes sociais.")
         elif incoming_msg == "3":
+            set_state(user_number, "menu")  # não queremos registrar nada
             msg.body("🐾 Oferecemos marketing especializado para clínicas veterinárias.")
         elif incoming_msg == "4":
             set_state(user_number, "ia")
@@ -74,10 +73,13 @@ def webhook():
 
     if estado == "congresso_feiras":
         if incoming_msg == "1":
+            set_rota(user_number, "Fotos - Congresso & Feiras")
             msg.body("📸 Fotos profissionais de congressos e feiras para destacar sua marca.")
         elif incoming_msg == "2":
+            set_rota(user_number, "Vídeos - Congresso & Feiras")
             msg.body("🎥 Vídeos envolventes para redes sociais e divulgação.")
         elif incoming_msg == "3":
+            set_rota(user_number, "Cobertura completa - Congresso & Feiras")
             msg.body("✨ Cobertura completa com fotos, vídeos, reels e edição.")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
@@ -88,8 +90,10 @@ def webhook():
 
     if estado == "speakers":
         if incoming_msg == "1":
+            set_rota(user_number, "Pré Reels - Speakers")
             msg.body("🎬 Chamadas personalizadas para reels com speakers.")
         elif incoming_msg == "2":
+            set_rota(user_number, "Cobertura visual - Speakers")
             msg.body("🎤 Cobertura com foco em presença de marca e impacto visual.")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
