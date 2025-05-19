@@ -55,7 +55,7 @@ Este projeto é um chatbot híbrido que integra respostas geradas por IA com bas
    OPENAI_MODEL=seu-modelo-aqui
    ```
 
-5. Coloque seu arquivo de base de conhecimento em `data/base_conhecimento.txt`.
+5. Coloque seu arquivo de base de conhecimento em `data/data.txt`.
 
 6. Execute a aplicação localmente:
 

@@ -1,3 +1,5 @@
+# menus.py
+
 def menu_principal():
     return (
         "👋 Olá! Seja bem-vindo à *E-Vitrine*, sua parceira em marketing digital.\n\n"

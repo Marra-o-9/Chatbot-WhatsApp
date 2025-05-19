@@ -1,3 +1,5 @@
+# main.py
+
 from flask import request
 from twilio.twiml.messaging_response import MessagingResponse
 from .menus import *
@@ -32,7 +34,10 @@ def webhook():
         return str(resp)
 
     if estado == "menu":
-        if incoming_msg == "1":
+        saudacoes = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite"]
+        if incoming_msg.lower() in saudacoes:
+            msg.body(menu_principal())
+        elif incoming_msg == "1":
             set_state(user_number, "cobertura_eventos")
             msg.body(menu_cobertura_eventos())
         elif incoming_msg == "2":
