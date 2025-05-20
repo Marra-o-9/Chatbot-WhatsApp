@@ -1,10 +1,15 @@
 # main.py
 
+import logging
 from flask import request
 from twilio.twiml.messaging_response import MessagingResponse
 from .menus import *
 from .states import get_state, set_state, set_rota
 from .rag import iniciar_rag
+
+# Configurar logger para o Render
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 qa_chain = iniciar_rag()
 
@@ -12,7 +17,7 @@ def tratar_ia(incoming_msg, user_number):
     if incoming_msg.upper() == "VOLTAR":
         set_state(user_number, "menu")
         resposta = "🔙 Voltando ao menu principal...\n\n" + menu_principal()
-        print(f"[RESPOSTA] {user_number}: {resposta}")
+        logger.info(f"[RESPOSTA] {user_number}: {resposta}")
         return resposta
 
     prompt = (
@@ -22,17 +27,17 @@ def tratar_ia(incoming_msg, user_number):
     )
     resposta = qa_chain.invoke({"query": prompt})["result"]
     resposta += "\n\nDigite *VOLTAR* para retornar ao menu."
-    print(f"[RESPOSTA] {user_number}: {resposta}")
+    logger.info(f"[RESPOSTA] {user_number}: {resposta}")
     return resposta
 
 def enviar_resposta(msg_obj, user_number, texto):
-    print(f"[RESPOSTA] {user_number}: {texto}")
+    logger.info(f"[RESPOSTA] {user_number}: {texto}")
     msg_obj.body(texto)
 
 def webhook():
     incoming_msg = request.values.get("Body", "").strip()
     user_number = request.values.get("From", "")
-    print(f"[MENSAGEM RECEBIDA] {user_number}: {incoming_msg}")
+    logger.info(f"[MENSAGEM RECEBIDA] {user_number}: {incoming_msg}")
 
     resp = MessagingResponse()
     msg = resp.message()
