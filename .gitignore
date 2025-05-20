@@ -1,3 +1,6 @@
+# Ignorar dados sensíveis
+.db
+
 # Ignorar ambientes virtuais
 venv/
 .env
