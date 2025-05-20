@@ -57,11 +57,11 @@ def webhook():
             set_state(user_number, "cobertura_eventos")
             enviar_resposta(msg, user_number, menu_cobertura_eventos())
         elif incoming_msg == "2":
-            set_state(user_number, "menu")  # não queremos registrar nada
-            enviar_resposta(msg, user_number, "🩺 Ajudamos médicos a se posicionarem de forma estratégica nas redes sociais.")
+            set_state(user_number, "md_humanos")
+            enviar_resposta(msg, user_number, menu_md_humanos())
         elif incoming_msg == "3":
-            set_state(user_number, "menu")  # não queremos registrar nada
-            enviar_resposta(msg, user_number, "🐾 Oferecemos marketing especializado para clínicas veterinárias.")
+            set_state(user_number, "md_veterinarios")
+            enviar_resposta(msg, user_number, menu_md_veterinarios())
         elif incoming_msg == "4":
             set_state(user_number, "ia")
             resposta = (
@@ -74,6 +74,7 @@ def webhook():
             enviar_resposta(msg, user_number, "❌ Opção inválida.\n\n" + menu_principal())
         return str(resp)
 
+    # Cobertura de eventos
     if estado == "cobertura_eventos":
         if incoming_msg == "1":
             set_state(user_number, "congresso_feiras")
@@ -117,6 +118,108 @@ def webhook():
             enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_cobertura_eventos())
         else:
             enviar_resposta(msg, user_number, "❌ Opção inválida. Escolha 1 ou 2, ou digite *VOLTAR*.")
+        return str(resp)
+
+    # Marketing Digital para Médicos Humanos
+    if estado == "md_humanos":
+        if incoming_msg == "1":
+            set_state(user_number, "fotos_humanos")
+            enviar_resposta(msg, user_number, menu_fotos_videos("Médicos Humanos"))
+        elif incoming_msg == "2":
+            set_state(user_number, "redes_humanos")
+            enviar_resposta(msg, user_number, menu_redes("Médicos Humanos"))
+        elif incoming_msg == "3":
+            set_state(user_number, "eventos_humanos")
+            enviar_resposta(msg, user_number, menu_eventos("Médicos Humanos"))
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "menu")
+            enviar_resposta(msg, user_number, menu_principal())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
+        return str(resp)
+
+    if estado in ["fotos_humanos", "redes_humanos", "eventos_humanos"]:
+        rotas = {
+            "fotos_humanos": ["Autoridade Médica", "Consultório Médico"],
+            "redes_humanos": ["Posts + Monitoramento", "Posts + Fotos/Vídeos + Monitoramento"],
+            "eventos_humanos": ["Cobertura de Evento", "Cobertura com Edição Imediata"]
+        }
+        if incoming_msg in ["1", "2"]:
+            index = int(incoming_msg) - 1
+            rota_nome = rotas[estado][index]
+            set_state(user_number, f"final_{estado}")
+            enviar_resposta(msg, user_number, menu_final(f"{rota_nome} - Médicos Humanos"))
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "md_humanos")
+            enviar_resposta(msg, user_number, menu_md_humanos())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
+        return str(resp)
+
+    if estado.startswith("final_") and "humanos" in estado:
+        contexto = estado.replace("final_", "").replace("_humanos", "").replace("_", " ").title()
+        if incoming_msg == "1":
+            set_rota(user_number, f"{contexto} - WhatsApp - Médicos Humanos")
+            enviar_resposta(msg, user_number, "📲 Em breve um consultor entrará em contato via WhatsApp.")
+        elif incoming_msg == "2":
+            set_rota(user_number, f"{contexto} - Ligação - Médicos Humanos")
+            enviar_resposta(msg, user_number, "📞 Nossa equipe fará uma ligação comercial para você.")
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "md_humanos")
+            enviar_resposta(msg, user_number, menu_md_humanos())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
+        return str(resp)
+
+    # Marketing Digital para Médicos Veterinários
+    if estado == "md_veterinarios":
+        if incoming_msg == "1":
+            set_state(user_number, "fotos_veterinarios")
+            enviar_resposta(msg, user_number, menu_fotos_videos("Médicos Veterinários"))
+        elif incoming_msg == "2":
+            set_state(user_number, "redes_veterinarios")
+            enviar_resposta(msg, user_number, menu_redes("Médicos Veterinários"))
+        elif incoming_msg == "3":
+            set_state(user_number, "eventos_veterinarios")
+            enviar_resposta(msg, user_number, menu_eventos("Médicos Veterinários"))
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "menu")
+            enviar_resposta(msg, user_number, menu_principal())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
+        return str(resp)
+
+    if estado in ["fotos_veterinarios", "redes_veterinarios", "eventos_veterinarios"]:
+        rotas = {
+            "fotos_veterinarios": ["Autoridade Veterinária", "Consultório Veterinário"],
+            "redes_veterinarios": ["Posts + Monitoramento", "Posts + Fotos/Vídeos + Monitoramento"],
+            "eventos_veterinarios": ["Cobertura de Evento", "Cobertura com Edição Imediata"]
+        }
+        if incoming_msg in ["1", "2"]:
+            index = int(incoming_msg) - 1
+            rota_nome = rotas[estado][index]
+            set_state(user_number, f"final_{estado}")
+            enviar_resposta(msg, user_number, menu_final(f"{rota_nome} - Médicos Veterinários"))
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "md_veterinarios")
+            enviar_resposta(msg, user_number, menu_md_veterinarios())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
+        return str(resp)
+
+    if estado.startswith("final_") and "veterinarios" in estado:
+        contexto = estado.replace("final_", "").replace("_veterinarios", "").replace("_", " ").title()
+        if incoming_msg == "1":
+            set_rota(user_number, f"{contexto} - WhatsApp - Médicos Veterinários")
+            enviar_resposta(msg, user_number, "📲 Em breve um consultor entrará em contato via WhatsApp.")
+        elif incoming_msg == "2":
+            set_rota(user_number, f"{contexto} - Ligação - Médicos Veterinários")
+            enviar_resposta(msg, user_number, "📞 Nossa equipe fará uma ligação comercial para você.")
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "md_veterinarios")
+            enviar_resposta(msg, user_number, menu_md_veterinarios())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
         return str(resp)
 
     return str(resp)
