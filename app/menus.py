@@ -1,4 +1,4 @@
-# menus.py
+# app/menus.py
 
 def menu_principal():
     return (

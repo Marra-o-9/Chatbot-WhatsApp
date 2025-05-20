@@ -1,4 +1,4 @@
-# __init__.py
+# app/__init__.py
 
 from flask import Flask
 from .main import webhook

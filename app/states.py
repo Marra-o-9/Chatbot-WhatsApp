@@ -1,4 +1,4 @@
-# states.py
+# app/states.py
 
 import sqlite3
 import os

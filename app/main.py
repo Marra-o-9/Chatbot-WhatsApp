@@ -1,4 +1,4 @@
-# main.py
+# app/main.py
 
 import logging
 from flask import request
@@ -90,15 +90,15 @@ def webhook():
         return str(resp)
 
     if estado == "congresso_feiras":
-        if incoming_msg == "1":
-            set_rota(user_number, "Fotos - Congresso & Feiras")
-            enviar_resposta(msg, user_number, "📸 Fotos profissionais de congressos e feiras para destacar sua marca.")
-        elif incoming_msg == "2":
-            set_rota(user_number, "Vídeos - Congresso & Feiras")
-            enviar_resposta(msg, user_number, "🎥 Vídeos envolventes para redes sociais e divulgação.")
-        elif incoming_msg == "3":
-            set_rota(user_number, "Cobertura completa - Congresso & Feiras")
-            enviar_resposta(msg, user_number, "✨ Cobertura completa com fotos, vídeos, reels e edição.")
+        rotas = {
+            "1": "Fotos - Congresso & Feiras",
+            "2": "Vídeos - Congresso & Feiras",
+            "3": "Cobertura completa - Congresso & Feiras"
+        }
+        if incoming_msg in rotas:
+            rota_nome = rotas[incoming_msg]
+            set_state(user_number, "final_congresso_feiras")
+            enviar_resposta(msg, user_number, menu_final(rota_nome))
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
             enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_cobertura_eventos())
@@ -107,12 +107,14 @@ def webhook():
         return str(resp)
 
     if estado == "speakers":
-        if incoming_msg == "1":
-            set_rota(user_number, "Pré Reels - Speakers")
-            enviar_resposta(msg, user_number, "🎬 Chamadas personalizadas para reels com speakers.")
-        elif incoming_msg == "2":
-            set_rota(user_number, "Cobertura visual - Speakers")
-            enviar_resposta(msg, user_number, "🎤 Cobertura com foco em presença de marca e impacto visual.")
+        rotas = {
+            "1": "Pré Reels - Speakers",
+            "2": "Cobertura visual - Speakers"
+        }
+        if incoming_msg in rotas:
+            rota_nome = rotas[incoming_msg]
+            set_state(user_number, "final_speakers")
+            enviar_resposta(msg, user_number, menu_final(rota_nome))
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
             enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_cobertura_eventos())
@@ -133,7 +135,7 @@ def webhook():
             enviar_resposta(msg, user_number, menu_eventos("Médicos Humanos"))
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "menu")
-            enviar_resposta(msg, user_number, menu_principal())
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_principal())
         else:
             enviar_resposta(msg, user_number, "❌ Opção inválida.")
         return str(resp)
@@ -151,7 +153,7 @@ def webhook():
             enviar_resposta(msg, user_number, menu_final(f"{rota_nome} - Médicos Humanos"))
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_humanos")
-            enviar_resposta(msg, user_number, menu_md_humanos())
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_md_humanos())
         else:
             enviar_resposta(msg, user_number, "❌ Opção inválida.")
         return str(resp)
@@ -166,7 +168,7 @@ def webhook():
             enviar_resposta(msg, user_number, "📞 Nossa equipe fará uma ligação comercial para você.")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_humanos")
-            enviar_resposta(msg, user_number, menu_md_humanos())
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_md_humanos())
         else:
             enviar_resposta(msg, user_number, "❌ Opção inválida.")
         return str(resp)
@@ -184,7 +186,7 @@ def webhook():
             enviar_resposta(msg, user_number, menu_eventos("Médicos Veterinários"))
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "menu")
-            enviar_resposta(msg, user_number, menu_principal())
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_principal())
         else:
             enviar_resposta(msg, user_number, "❌ Opção inválida.")
         return str(resp)
@@ -202,7 +204,7 @@ def webhook():
             enviar_resposta(msg, user_number, menu_final(f"{rota_nome} - Médicos Veterinários"))
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_veterinarios")
-            enviar_resposta(msg, user_number, menu_md_veterinarios())
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_md_veterinarios())
         else:
             enviar_resposta(msg, user_number, "❌ Opção inválida.")
         return str(resp)
@@ -217,7 +219,35 @@ def webhook():
             enviar_resposta(msg, user_number, "📞 Nossa equipe fará uma ligação comercial para você.")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_veterinarios")
-            enviar_resposta(msg, user_number, menu_md_veterinarios())
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_md_veterinarios())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
+        return str(resp)
+    
+    if estado == "final_congresso_feiras":
+        if incoming_msg == "1":
+            set_rota(user_number, "Congresso & Feiras - WhatsApp")
+            enviar_resposta(msg, user_number, "📲 Em breve um consultor entrará em contato via WhatsApp.")
+        elif incoming_msg == "2":
+            set_rota(user_number, "Congresso & Feiras - Ligação")
+            enviar_resposta(msg, user_number, "📞 Nossa equipe fará uma ligação comercial para você.")
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "congresso_feiras")
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_congresso_feiras())
+        else:
+            enviar_resposta(msg, user_number, "❌ Opção inválida.")
+        return str(resp)
+
+    if estado == "final_speakers":
+        if incoming_msg == "1":
+            set_rota(user_number, "Speakers - WhatsApp")
+            enviar_resposta(msg, user_number, "📲 Em breve um consultor entrará em contato via WhatsApp.")
+        elif incoming_msg == "2":
+            set_rota(user_number, "Speakers - Ligação")
+            enviar_resposta(msg, user_number, "📞 Nossa equipe fará uma ligação comercial para você.")
+        elif incoming_msg.upper() == "VOLTAR":
+            set_state(user_number, "speakers")
+            enviar_resposta(msg, user_number, "🔙 Voltando ao menu anterior...\n\n" + menu_speakers())
         else:
             enviar_resposta(msg, user_number, "❌ Opção inválida.")
         return str(resp)

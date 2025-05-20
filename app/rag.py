@@ -1,4 +1,4 @@
-# rag.py
+# app/rag.py
 
 import os
 from dotenv import load_dotenv
