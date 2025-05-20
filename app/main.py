@@ -4,7 +4,7 @@ import logging
 from flask import request
 from twilio.twiml.messaging_response import MessagingResponse
 from .states import get_state
-from .handlers import handle_message
+from . import handle_message
 
 # Logger
 logging.basicConfig(level=logging.INFO)
