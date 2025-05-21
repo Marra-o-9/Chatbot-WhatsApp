@@ -4,10 +4,10 @@ def menu_principal():
     return (
         "👋 Olá! Seja bem-vindo à *E-Vitrine*, sua parceira em marketing digital.\n\n"
         "Escolha uma das opções para continuar:\n"
-        "1️⃣ - Cobertura de eventos\n"
-        "2️⃣ - Marketing digital para médicos\n"
-        "3️⃣ - Marketing digital para segmento veterinário\n"
-        "4️⃣ - Chatbot especializado com IA\n\n"
+        "1️⃣ - Cobertura de Eventos\n"
+        "2️⃣ - Marketing Digital para Médicos\n"
+        "3️⃣ - Marketing Digital para Segmento Veterinário\n"
+        "4️⃣ - Chatbot Especializado com IA\n\n"
         "Digite o número da opção desejada."
     )
 

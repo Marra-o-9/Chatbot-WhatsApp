@@ -1,10 +1,12 @@
-# app/handlers/md_humanos.py
+# app/handlers/md_humanos_handler.py
 
-from ..menus import menu_fotos_videos, menu_redes, menu_eventos, menu_md_humanos, menu_final
-from ..states import set_state, set_rota
+import logging
+from app.menus import menu_principal, menu_md_humanos, menu_fotos_videos, menu_redes, menu_eventos, menu_final
+from app.states import set_state, set_rota, set_servico
 
+logger = logging.getLogger(__name__)
 
-def tratar_humanos(estado, incoming_msg, user_number):
+def handle(incoming_msg, user_number, estado):
     if estado == "md_humanos":
         if incoming_msg == "1":
             set_state(user_number, "fotos_humanos")
@@ -17,12 +19,11 @@ def tratar_humanos(estado, incoming_msg, user_number):
             return menu_eventos("Médicos Humanos")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "menu")
-            from ..menus import menu_principal
-            return "🔙 Voltando ao menu anterior...\n\n" + menu_principal()
+            return "🔙 Voltando ao menu principal...\n\n" + menu_principal()
         else:
             return "❌ Opção inválida."
 
-    elif estado in ["fotos_humanos", "redes_humanos", "eventos_humanos"]:
+    if estado in ["fotos_humanos", "redes_humanos", "eventos_humanos"]:
         rotas = {
             "fotos_humanos": ["Autoridade Médica", "Consultório Médico"],
             "redes_humanos": ["Posts + Monitoramento", "Posts + Fotos/Vídeos + Monitoramento"],
@@ -31,6 +32,7 @@ def tratar_humanos(estado, incoming_msg, user_number):
         if incoming_msg in ["1", "2"]:
             index = int(incoming_msg) - 1
             rota_nome = rotas[estado][index]
+            set_servico(user_number, rota_nome)
             set_state(user_number, f"final_{estado}")
             return menu_final(f"{rota_nome} - Médicos Humanos")
         elif incoming_msg.upper() == "VOLTAR":
@@ -39,7 +41,7 @@ def tratar_humanos(estado, incoming_msg, user_number):
         else:
             return "❌ Opção inválida."
 
-    elif estado.startswith("final_") and "humanos" in estado:
+    if estado.startswith("final_") and "humanos" in estado:
         contexto = estado.replace("final_", "").replace("_humanos", "").replace("_", " ").title()
         if incoming_msg == "1":
             set_rota(user_number, f"{contexto} - WhatsApp - Médicos Humanos")
