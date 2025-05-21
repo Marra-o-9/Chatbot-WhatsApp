@@ -15,7 +15,7 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL")
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 def iniciar_rag():
-    loader = TextLoader("data/data.txt")
+    loader = TextLoader("data/data.txt", encoding="utf-8")
     raw_docs = loader.load()
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
     docs = splitter.split_documents(raw_docs)
