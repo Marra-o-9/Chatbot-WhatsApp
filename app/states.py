@@ -13,7 +13,8 @@ def inicializar_db():
         CREATE TABLE IF NOT EXISTS usuarios (
             numero TEXT PRIMARY KEY,
             estado TEXT NOT NULL,
-            ultima_rota TEXT
+            ultima_rota TEXT,
+            servico_escolhido TEXT
         )
     """)
     conn.commit()
@@ -45,5 +46,15 @@ def set_rota(numero, rota):
         UPDATE usuarios SET ultima_rota = ?
         WHERE numero = ?
     """, (rota, numero))
+    conn.commit()
+    conn.close()
+
+def set_servico(numero, servico):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE usuarios SET servico_escolhido = ?
+        WHERE numero = ?
+    """, (servico, numero))
     conn.commit()
     conn.close()

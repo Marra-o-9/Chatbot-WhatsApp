@@ -1,6 +1,8 @@
+# app/handlers/md_veterinarios_handler.py
+
 import logging
 from app.menus import menu_principal, menu_md_veterinarios, menu_fotos_videos, menu_redes, menu_eventos, menu_final
-from app.states import set_state, set_rota
+from app.states import set_state, set_rota, set_servico
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +32,7 @@ def handle(incoming_msg, user_number, estado):
         if incoming_msg in ["1", "2"]:
             index = int(incoming_msg) - 1
             rota_nome = rotas[estado][index]
+            set_servico(user_number, rota_nome)
             set_state(user_number, f"final_{estado}")
             return menu_final(f"{rota_nome} - Médicos Veterinários")
         elif incoming_msg.upper() == "VOLTAR":

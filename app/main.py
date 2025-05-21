@@ -29,7 +29,7 @@ def webhook():
         resposta = ia_handler.handle(incoming_msg, user_number)
     elif estado == "menu":
         resposta = menu_handler.handle(incoming_msg, user_number)
-    elif estado == "cobertura_eventos" or estado == "congresso_feiras" or estado == "speakers":
+    elif estado in ["cobertura_eventos", "congresso_feiras", "speakers"] or (estado.startswith("final_") and any(x in estado for x in ["congresso_feiras", "speakers"])):
         resposta = cobertura_handler.handle(incoming_msg, user_number, estado)
     elif estado in ["md_humanos", "fotos_humanos", "redes_humanos", "eventos_humanos"] or (estado.startswith("final_") and "humanos" in estado):
         resposta = md_humanos_handler.handle(incoming_msg, user_number, estado)
