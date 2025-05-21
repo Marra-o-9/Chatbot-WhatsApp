@@ -7,8 +7,9 @@ from app.states import set_state
 logger = logging.getLogger(__name__)
 
 def handle(incoming_msg, user_number):
-    saudacoes = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite"]
+    saudacoes = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "menu"]
     if incoming_msg.lower() in saudacoes:
+        set_state(user_number, "menu")
         return menu_principal()
     elif incoming_msg == "1":
         set_state(user_number, "cobertura_eventos")

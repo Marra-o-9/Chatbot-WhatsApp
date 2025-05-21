@@ -1,7 +1,5 @@
-# app/handlers/md_humanos_handler.py
-
 import logging
-from app.menus import menu_md_humanos, menu_fotos_videos, menu_redes, menu_eventos, menu_final
+from app.menus import menu_principal, menu_md_humanos, menu_fotos_videos, menu_redes, menu_eventos, menu_final
 from app.states import set_state, set_rota
 
 logger = logging.getLogger(__name__)
@@ -19,7 +17,7 @@ def handle(incoming_msg, user_number, estado):
             return menu_eventos("Médicos Humanos")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "menu")
-            return "🔙 Voltando ao menu anterior...\n\n" + menu_md_humanos()
+            return "🔙 Voltando ao menu principal...\n\n" + menu_principal()
         else:
             return "❌ Opção inválida."
 
