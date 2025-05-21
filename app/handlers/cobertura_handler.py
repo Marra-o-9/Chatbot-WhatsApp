@@ -3,6 +3,7 @@
 import logging
 from app.menus import menu_principal, menu_cobertura_eventos, menu_congresso_feiras, menu_speakers, menu_final
 from app.states import set_state, set_servico, set_rota
+from app.notificador import notificar_atendente
 
 logger = logging.getLogger(__name__)
 
@@ -46,9 +47,11 @@ def handle(incoming_msg, user_number, estado):
         contexto = estado.replace("final_", "").replace("_", " ").title()
         if incoming_msg == "1":
             set_rota(user_number, f"{contexto} - WhatsApp - Eventos")
+            notificar_atendente(user_number)
             return "📲 Em breve um consultor entrará em contato via WhatsApp."
         elif incoming_msg == "2":
             set_rota(user_number, f"{contexto} - Ligação - Eventos")
+            notificar_atendente(user_number)
             return "📞 Nossa equipe fará uma ligação comercial para você."
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")

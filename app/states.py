@@ -58,3 +58,22 @@ def set_servico(numero, servico):
     """, (servico, numero))
     conn.commit()
     conn.close()
+
+def get_user_info(numero):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT numero, estado, ultima_rota, servico_escolhido
+        FROM usuarios
+        WHERE numero = ?
+    """, (numero,))
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return {
+            "numero": row[0],
+            "estado": row[1],
+            "rota": row[2],
+            "servico": row[3]
+        }
+    return None
