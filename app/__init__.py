@@ -1,7 +1,7 @@
 # app/__init__.py
 
 from flask import Flask
-from .main import webhook
+from app.main import webhook
 
 def create_app():
     app = Flask(__name__)
