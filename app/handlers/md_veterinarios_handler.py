@@ -23,7 +23,7 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "menu")
             return messages.voltando_menu + menu_principal()
         else:
-            return messages.opcao_invalida
+            return messages.opcao_invalida + menu_principal()
 
     if estado in ["fotos_veterinarios", "redes_veterinarios", "eventos_veterinarios"]:
         rotas = {
@@ -41,7 +41,7 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "md_veterinarios")
             return messages.voltando_anterior + menu_md_veterinarios()
         else:
-            return messages.opcao_invalida
+            return messages.opcao_invalida + menu_principal()
 
     if estado.startswith("final_") and "veterinarios" in estado:
         contexto = estado.replace("final_", "").replace("_veterinarios", "").replace("_", " ").title()
@@ -59,6 +59,6 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "md_veterinarios")
             return messages.voltando_anterior + menu_md_veterinarios()
         else:
-            return messages.opcao_invalida
+            return messages.opcao_invalida + menu_principal()
 
-    return messages.opcao_invalida
+    return messages.opcao_invalida + menu_principal()

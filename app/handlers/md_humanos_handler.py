@@ -23,7 +23,7 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "menu")
             return messages.voltando_menu + menu_principal()
         else:
-            return messages.opcao_invalida
+            return messages.opcao_invalida + menu_principal()
 
     if estado in ["fotos_humanos", "redes_humanos", "eventos_humanos"]:
         rotas = {
@@ -41,7 +41,7 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "md_humanos")
             return messages.voltando_anterior + menu_md_humanos()
         else:
-            return messages.opcao_invalida
+            return messages.opcao_invalida + menu_principal()
 
     if estado.startswith("final_") and "humanos" in estado:
         contexto = estado.replace("final_", "").replace("_humanos", "").replace("_", " ").title()
@@ -59,6 +59,6 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "md_humanos")
             return messages.voltando_anterior + menu_md_humanos()
         else:
-            return messages.opcao_invalida
+            return messages.opcao_invalida + menu_principal()
 
-    return messages.opcao_invalida
+    return messages.opcao_invalida + menu_principal()
