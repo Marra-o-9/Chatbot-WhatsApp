@@ -4,6 +4,7 @@ import logging
 from app.menus import menu_principal, menu_md_humanos, menu_fotos_videos, menu_redes, menu_eventos, menu_final
 from app.states import set_state, set_rota, set_servico
 from app.notificador import notificar_atendente
+from app.utils import messages
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +21,9 @@ def handle(incoming_msg, user_number, estado):
             return menu_eventos("Médicos Humanos")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "menu")
-            return "🔙 Voltando ao menu principal...\n\n" + menu_principal()
+            return messages.voltando_menu + menu_principal()
         else:
-            return "❌ Opção inválida."
+            return messages.opcao_invalida
 
     if estado in ["fotos_humanos", "redes_humanos", "eventos_humanos"]:
         rotas = {
@@ -38,24 +39,26 @@ def handle(incoming_msg, user_number, estado):
             return menu_final(f"{rota_nome} - Médicos Humanos")
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_humanos")
-            return "🔙 Voltando ao menu anterior...\n\n" + menu_md_humanos()
+            return messages.voltando_anterior + menu_md_humanos()
         else:
-            return "❌ Opção inválida."
+            return messages.opcao_invalida
 
     if estado.startswith("final_") and "humanos" in estado:
         contexto = estado.replace("final_", "").replace("_humanos", "").replace("_", " ").title()
         if incoming_msg == "1":
             set_rota(user_number, f"Médicos Humanos - {contexto} - WhatsApp")
             notificar_atendente(user_number)
-            return "📲 Em breve um consultor entrará em contato via WhatsApp."
+            set_state(user_number, "menu")
+            return messages.contato_whatsapp + messages.voltando_menu + menu_principal()
         elif incoming_msg == "2":
             set_rota(user_number, f"Médicos Humanos - {contexto} - Ligação")
             notificar_atendente(user_number)
-            return "📞 Nossa equipe fará uma ligação comercial para você."
+            set_state(user_number, "menu")
+            return messages.contato_ligacao + messages.voltando_menu + menu_principal()
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_humanos")
-            return "🔙 Voltando ao menu anterior...\n\n" + menu_md_humanos()
+            return messages.voltando_anterior + menu_md_humanos()
         else:
-            return "❌ Opção inválida."
+            return messages.opcao_invalida
 
-    return "❌ Opção inválida."
+    return messages.opcao_invalida

@@ -4,6 +4,7 @@ import logging
 from app.menus import menu_principal, menu_cobertura_eventos, menu_congresso_feiras, menu_speakers, menu_final
 from app.states import set_state, set_servico, set_rota
 from app.notificador import notificar_atendente
+from app.utils import messages
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +18,9 @@ def handle(incoming_msg, user_number, estado):
             return menu_speakers()
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "menu")
-            return "🔙 Voltando ao menu principal...\n\n" + menu_principal()
+            return messages.voltando_menu + menu_principal()
         else:
-            return "❌ Opção inválida."
+            return messages.opcao_invalida
 
     if estado in ["congresso_feiras", "speakers"]:
         rotas = {
@@ -37,26 +38,28 @@ def handle(incoming_msg, user_number, estado):
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
             if estado == "congresso_feiras":
-                return "🔙 Voltando ao menu anterior...\n\n" + menu_congresso_feiras()
+                return messages.voltando_anterior + menu_congresso_feiras()
             else:
-                return "🔙 Voltando ao menu anterior...\n\n" + menu_speakers()
+                return messages.voltando_anterior + menu_speakers()
         else:
-            return "❌ Opção inválida."
+            return messages.opcao_invalida
 
     if estado.startswith("final_") and any(x in estado for x in ["congresso_feiras", "speakers"]):
         contexto = estado.replace("final_", "").replace("_", " ").title()
         if incoming_msg == "1":
             set_rota(user_number, f"Eventos - {contexto} - WhatsApp")
             notificar_atendente(user_number)
-            return "📲 Em breve um consultor entrará em contato via WhatsApp."
+            set_state(user_number, "menu")
+            return messages.contato_whatsapp + messages.voltando_menu + menu_principal()
         elif incoming_msg == "2":
             set_rota(user_number, f"Eventos - {contexto} - Ligação")
             notificar_atendente(user_number)
-            return "📞 Nossa equipe fará uma ligação comercial para você."
+            set_state(user_number, "menu")
+            return messages.contato_ligacao + messages.voltando_menu + menu_principal()
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
-            return "🔙 Voltando ao menu anterior...\n\n" + menu_cobertura_eventos()
+            return messages.voltando_anterior + menu_cobertura_eventos()
         else:
-            return "❌ Opção inválida."
+            return messages.opcao_invalida
 
-    return "❌ Opção inválida."
+    return messages.opcao_invalida
