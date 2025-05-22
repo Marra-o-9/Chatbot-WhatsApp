@@ -37,7 +37,8 @@ def notificar_atendente(user_number):
         f"📌 Estado: {user_info['estado']}\n"
         f"🎯 Serviço: {user_info['servico']}\n"
         f"🗺️ Rota: {user_info['rota']}\n\n"
-        f"👉 *[Conversar com o cliente]({link_whatsapp})* 👈"
+        f"👉 Para iniciar a conversa com o cliente, clique no link abaixo:\n"
+        f"{link_whatsapp}"
     )
 
     try:
