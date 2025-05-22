@@ -20,6 +20,7 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "menu")
             return messages.voltando_menu + menu_principal()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
     if estado in ["congresso_feiras", "speakers"]:
@@ -42,6 +43,7 @@ def handle(incoming_msg, user_number, estado):
             else:
                 return messages.voltando_anterior + menu_speakers()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
     if estado.startswith("final_") and any(x in estado for x in ["congresso_feiras", "speakers"]):
@@ -60,6 +62,8 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "cobertura_eventos")
             return messages.voltando_anterior + menu_cobertura_eventos()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
+    set_state(user_number, "menu")
     return messages.opcao_invalida + menu_principal()

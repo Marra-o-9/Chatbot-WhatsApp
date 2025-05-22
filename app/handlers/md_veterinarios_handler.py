@@ -23,6 +23,7 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "menu")
             return messages.voltando_menu + menu_principal()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
     if estado in ["fotos_veterinarios", "redes_veterinarios", "eventos_veterinarios"]:
@@ -41,6 +42,7 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "md_veterinarios")
             return messages.voltando_anterior + menu_md_veterinarios()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
     if estado.startswith("final_") and "veterinarios" in estado:
@@ -59,6 +61,8 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "md_veterinarios")
             return messages.voltando_anterior + menu_md_veterinarios()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
+    set_state(user_number, "menu")
     return messages.opcao_invalida + menu_principal()

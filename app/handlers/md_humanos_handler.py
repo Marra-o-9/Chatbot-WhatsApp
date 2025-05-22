@@ -59,6 +59,8 @@ def handle(incoming_msg, user_number, estado):
             set_state(user_number, "md_humanos")
             return messages.voltando_anterior + menu_md_humanos()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
+    set_state(user_number, "menu")
     return messages.opcao_invalida + menu_principal()
