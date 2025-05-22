@@ -20,7 +20,8 @@ def handle(incoming_msg, user_number):
         "Responda com clareza e objetividade como um especialista. "
         f"Pergunta do cliente: {incoming_msg}"
     )
-    resposta = qa_chain.invoke({"query": prompt})["result"]
+    resposta = "🤖 _*Chatbot E-Vitrine*_: \n\n"
+    resposta += qa_chain.invoke({"query": prompt})["result"]
     resposta += "\n\nDigite *VOLTAR* para retornar ao menu."
     logger.info(f"[IA] {user_number}: {resposta}")
     return resposta

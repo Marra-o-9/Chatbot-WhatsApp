@@ -32,7 +32,7 @@ def menu_congresso_feiras():
 def menu_speakers():
     return (
         "🎤 *Speakers no evento*\n\n"
-        "1️⃣ - Chamada de Pré Reels Digital\n"
+        "1️⃣ - Chamada de Pré Release Digital\n"
         "2️⃣ - Cobertura do Speakers no Evento\n\n"
         "Digite o número da opção ou *VOLTAR* para retornar."
     )

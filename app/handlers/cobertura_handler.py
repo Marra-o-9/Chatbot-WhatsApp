@@ -25,7 +25,7 @@ def handle(incoming_msg, user_number, estado):
     if estado in ["congresso_feiras", "speakers"]:
         rotas = {
             "congresso_feiras": ["Fotos - Congresso & Feiras", "Vídeos - Congresso & Feiras", "Cobertura completa - Congresso & Feiras"],
-            "speakers": ["Pré Reels - Speakers", "Cobertura visual - Speakers"]
+            "speakers": ["Pré Release - Speakers", "Cobertura visual - Speakers"]
         }
 
         opcoes_validas = [str(i + 1) for i in range(len(rotas[estado]))]
