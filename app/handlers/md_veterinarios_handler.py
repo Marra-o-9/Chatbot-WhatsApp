@@ -45,11 +45,11 @@ def handle(incoming_msg, user_number, estado):
     if estado.startswith("final_") and "veterinarios" in estado:
         contexto = estado.replace("final_", "").replace("_veterinarios", "").replace("_", " ").title()
         if incoming_msg == "1":
-            set_rota(user_number, f"{contexto} - WhatsApp - Médicos Veterinários")
+            set_rota(user_number, f"Médicos Veterinários - {contexto} - WhatsApp")
             notificar_atendente(user_number)
             return "📲 Em breve um consultor entrará em contato via WhatsApp."
         elif incoming_msg == "2":
-            set_rota(user_number, f"{contexto} - Ligação - Médicos Veterinários")
+            set_rota(user_number, f"Médicos Veterinários - {contexto} - Ligação")
             notificar_atendente(user_number)
             return "📞 Nossa equipe fará uma ligação comercial para você."
         elif incoming_msg.upper() == "VOLTAR":
