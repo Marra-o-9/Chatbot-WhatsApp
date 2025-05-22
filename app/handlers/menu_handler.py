@@ -3,11 +3,12 @@
 import logging
 from app.menus import menu_principal, menu_cobertura_eventos, menu_md_humanos, menu_md_veterinarios
 from app.states import set_state
+from app.utils import messages
 
 logger = logging.getLogger(__name__)
 
 def handle(incoming_msg, user_number):
-    saudacoes = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "menu"]
+    saudacoes = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "opa", "menu"]
     if incoming_msg.lower() in saudacoes:
         set_state(user_number, "menu")
         return menu_principal()
@@ -29,4 +30,5 @@ def handle(incoming_msg, user_number):
         )
         return resposta
     else:
-        return "❌ Opção inválida.\n\n" + menu_principal()
+        set_state(user_number, "menu")
+        return messages.opcao_invalida + menu_principal()

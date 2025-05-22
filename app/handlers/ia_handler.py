@@ -4,6 +4,7 @@ import logging
 from app.menus import menu_principal
 from app.states import set_state
 from app.rag import iniciar_rag
+from app.utils import messages
 
 logger = logging.getLogger(__name__)
 qa_chain = iniciar_rag()
@@ -11,7 +12,7 @@ qa_chain = iniciar_rag()
 def handle(incoming_msg, user_number):
     if incoming_msg.upper() == "VOLTAR":
         set_state(user_number, "menu")
-        resposta = "🔙 Voltando ao menu principal...\n\n" + menu_principal()
+        resposta = messages.voltando_menu + menu_principal()
         logger.info(f"[IA] {user_number}: {resposta}")
         return resposta
 
