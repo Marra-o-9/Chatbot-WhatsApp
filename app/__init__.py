@@ -1,11 +1,9 @@
-# app/handlers/__init__.py
+# app/__init__.py
 
 from flask import Flask
-from app.main import webhook
+from app.routes import routes
 
 def create_app():
     app = Flask(__name__)
-
-    app.add_url_rule("/webhook", view_func=webhook, methods=["POST"])
-
+    app.register_blueprint(routes)
     return app
