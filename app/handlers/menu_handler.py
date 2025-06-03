@@ -8,8 +8,9 @@ from app.utils import messages
 logger = logging.getLogger(__name__)
 
 def handle(incoming_msg, user_number):
-    saudacoes = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "opa", "menu"]
-    if incoming_msg.lower() in saudacoes:
+    saudacoes = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "opa", "oie", "salve", "menu"]
+    msg_lower = incoming_msg.lower()
+    if any(saudacao in msg_lower for saudacao in saudacoes):
         set_state(user_number, "menu")
         return menu_principal()
     elif incoming_msg == "1":
