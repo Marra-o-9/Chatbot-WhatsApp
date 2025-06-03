@@ -50,13 +50,13 @@ def handle(incoming_msg, user_number, estado):
         if incoming_msg == "1":
             set_rota(user_number, f"Médicos Veterinários - {contexto} - WhatsApp")
             notificar_atendente(user_number)
-            set_state(user_number, "menu")
-            return messages.contato_whatsapp + messages.voltando_menu + menu_principal()
+            set_state(user_number, "convite_ia")
+            return messages.contato_whatsapp + messages.convite_ia
         elif incoming_msg == "2":
             set_rota(user_number, f"Médicos Veterinários - {contexto} - Ligação")
             notificar_atendente(user_number)
-            set_state(user_number, "menu")
-            return messages.contato_ligacao + messages.voltando_menu + menu_principal()
+            set_state(user_number, "convite_ia")
+            return messages.contato_ligacao + messages.convite_ia
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_veterinarios")
             return messages.voltando_anterior + menu_md_veterinarios()

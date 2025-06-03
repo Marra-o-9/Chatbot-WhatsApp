@@ -86,3 +86,10 @@ def menu_final(rota):
         "2️⃣ - Ligação Comercial\n\n"
         "Digite o número da opção ou *VOLTAR* para retornar."
     )
+
+def menu_ia():
+    return (
+        "🤖 Você ativou o modo informativo com inteligência artificial.\n"
+        "Sou um chatbot especializado da *E-Vitrine* pronto para tirar suas dúvidas sobre marketing digital.\n\n"
+        "Digite sua pergunta ou *VOLTAR* para retornar ao menu."
+    )

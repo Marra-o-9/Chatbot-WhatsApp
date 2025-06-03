@@ -3,7 +3,7 @@
 import logging
 from flask import request
 from twilio.twiml.messaging_response import MessagingResponse
-from .handlers import ia_handler, menu_handler, cobertura_handler, md_humanos_handler, md_veterinarios_handler
+from .handlers import ia_handler, menu_handler, cobertura_handler, md_humanos_handler, md_veterinarios_handler, convite_ia_handler
 from app.states import get_state
 
 # Configuração do logger
@@ -35,6 +35,8 @@ def webhook():
         resposta = md_humanos_handler.handle(incoming_msg, user_number, estado)
     elif estado in ["md_veterinarios", "fotos_veterinarios", "redes_veterinarios", "eventos_veterinarios"] or (estado.startswith("final_") and "veterinarios" in estado):
         resposta = md_veterinarios_handler.handle(incoming_msg, user_number, estado)
+    elif estado == "convite_ia":
+        resposta = convite_ia_handler.handle(incoming_msg, user_number, estado)
     else:
         resposta = "❌ Estado não reconhecido."
 

@@ -1,7 +1,7 @@
 # app/handlers/menu_handler.py
 
 import logging
-from app.menus import menu_principal, menu_cobertura_eventos, menu_md_humanos, menu_md_veterinarios
+from app.menus import menu_principal, menu_cobertura_eventos, menu_md_humanos, menu_md_veterinarios, menu_ia
 from app.states import set_state
 from app.utils import messages
 
@@ -23,12 +23,7 @@ def handle(incoming_msg, user_number):
         return menu_md_veterinarios()
     elif incoming_msg == "4":
         set_state(user_number, "ia")
-        resposta = (
-            "🤖 Você ativou o modo informativo com inteligência artificial.\n"
-            "Sou um chatbot especializado da *E-Vitrine* pronto para tirar suas dúvidas sobre marketing digital.\n\n"
-            "Digite sua pergunta ou *VOLTAR* para retornar ao menu."
-        )
-        return resposta
+        return menu_ia()
     else:
         set_state(user_number, "menu")
         return messages.opcao_invalida + menu_principal()
