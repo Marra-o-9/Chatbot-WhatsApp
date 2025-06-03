@@ -5,4 +5,4 @@ contato_ligacao = "📞 Em breve nossa equipe fará uma ligação comercial para
 opcao_invalida = "❓ Não entendi.\n\n"
 voltando_menu = "🔙 Voltando ao menu principal...\n\n"
 voltando_anterior = "🔙 Voltando ao menu anterior...\n\n"
-convite_ia = "\n🤖 Quer conhecer nosso Chatbot com Inteligência Artificial? Responda *SIM* ou *NÃO*"
+convite_ia = "🤖 Quer conhecer nosso Chatbot com Inteligência Artificial? Responda *SIM* ou *NÃO*"
