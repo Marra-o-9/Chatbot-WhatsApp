@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 def handle(incoming_msg, user_number, estado):
     sim = ["sim", "s", "ss", "yes"]
-    nao = ["não", "nao", "n", "no"]
+    nao = ["não", "nao", "n", "no", "nn"]
     if estado == "convite_ia":
         if incoming_msg.lower() in sim:
             set_state(user_number, "ia")

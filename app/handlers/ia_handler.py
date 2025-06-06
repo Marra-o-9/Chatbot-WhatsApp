@@ -63,7 +63,7 @@ def handle(incoming_msg, user_number):
     session.add_history(user_number, "usuário", incoming_msg)
     session.add_history(user_number, "chatbot", resposta_ia)
 
-    resposta_completa = "🤖 _*Chatbot E-Vitrine*_: \n\n" + resposta_ia
+    resposta_completa = "🤖 _*Chatbot E-Vitrine:*_ \n\n" + resposta_ia
     partes = split_message(resposta_completa, MAX_CHARACTERS)
 
     if len(partes) == 1:

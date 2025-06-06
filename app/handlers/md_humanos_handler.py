@@ -27,34 +27,46 @@ def handle(incoming_msg, user_number, estado):
 
     if estado in ["fotos_humanos", "redes_humanos", "eventos_humanos"]:
         rotas = {
-            "fotos_humanos": ["Autoridade Médica", "Consultório Médico"],
-            "redes_humanos": ["Posts + Monitoramento", "Posts + Fotos/Vídeos + Monitoramento"],
-            "eventos_humanos": ["Cobertura de Evento", "Cobertura com Edição Imediata"]
+            "fotos_humanos": [
+                "Marketing Digital para Médicos -> Captação de Fotos e Vídeos -> Autoridade Médica",
+                "Marketing Digital para Médicos -> Captação de Fotos e Vídeos -> Consultório Médico"
+            ],
+            "redes_humanos": [
+                "Marketing Digital para Médicos -> Acompanhamento das Redes Sociais -> Posts Estáticos + Monitoramento",
+                "Marketing Digital para Médicos -> Acompanhamento das Redes Sociais -> Posts Estáticos + Fotos/Vídeos + Monitoramento"
+            ],
+            "eventos_humanos": [
+                "Marketing Digital para Médicos -> Cobertura de Evento -> Cobertura com Fotos e Vídeos",
+                "Marketing Digital para Médicos -> Cobertura de Evento -> Cobertura com entrega imediata"
+            ]
         }
         if incoming_msg in ["1", "2"]:
             index = int(incoming_msg) - 1
             rota_nome = rotas[estado][index]
             set_servico(user_number, rota_nome)
             set_state(user_number, f"final_{estado}")
-            return menu_final(f"{rota_nome} - Médicos Humanos")
+            return menu_final(rota_nome)
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_humanos")
             return messages.voltando_anterior + menu_md_humanos()
         else:
+            set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
     if estado.startswith("final_") and "humanos" in estado:
-        contexto = estado.replace("final_", "").replace("_humanos", "").replace("_", " ").title()
+        servico = estado.replace("final_", "").replace("_", " ")
         if incoming_msg == "1":
-            set_rota(user_number, f"Médicos Humanos - {contexto} - WhatsApp")
+            rota_completa = f"{servico.title().replace(' ', ' -> ')} -> Atendimento via WhatsApp"
+            set_rota(user_number, rota_completa)
             notificar_atendente(user_number)
             set_state(user_number, "convite_ia")
-            return messages.contato_whatsapp + messages.convite_ia
+            return messages.contato_whatsapp(user_number) + messages.convite_ia
         elif incoming_msg == "2":
-            set_rota(user_number, f"Médicos Humanos - {contexto} - Ligação")
+            rota_completa = f"{servico.title().replace(' ', ' -> ')} -> Ligação Comercial"
+            set_rota(user_number, rota_completa)
             notificar_atendente(user_number)
             set_state(user_number, "convite_ia")
-            return messages.contato_ligacao + messages.convite_ia
+            return messages.contato_ligacao(user_number) + messages.convite_ia
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "md_humanos")
             return messages.voltando_anterior + menu_md_humanos()

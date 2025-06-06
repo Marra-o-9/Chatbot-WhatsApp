@@ -25,8 +25,15 @@ def handle(incoming_msg, user_number, estado):
 
     if estado in ["congresso_feiras", "speakers"]:
         rotas = {
-            "congresso_feiras": ["Fotos - Congresso & Feiras", "Vídeos - Congresso & Feiras", "Cobertura completa - Congresso & Feiras"],
-            "speakers": ["Pré Release - Speakers", "Cobertura visual - Speakers"]
+            "congresso_feiras": [
+                "Cobertura de Eventos -> Congresso & Feiras -> Fotos",
+                "Cobertura de Eventos -> Congresso & Feiras -> Vídeos",
+                "Cobertura de Eventos -> Congresso & Feiras -> Cobertura completa"
+            ],
+            "speakers": [
+                "Cobertura de Eventos -> Speakers -> Chamada de Pré Release Digital",
+                "Cobertura de Eventos -> Speakers -> Cobertura do Speakers no Evento"
+            ]
         }
 
         opcoes_validas = [str(i + 1) for i in range(len(rotas[estado]))]
@@ -38,26 +45,25 @@ def handle(incoming_msg, user_number, estado):
             return menu_final(rota_nome)
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
-            if estado == "congresso_feiras":
-                return messages.voltando_anterior + menu_congresso_feiras()
-            else:
-                return messages.voltando_anterior + menu_speakers()
+            return messages.voltando_anterior + (menu_congresso_feiras() if estado == "congresso_feiras" else menu_speakers())
         else:
             set_state(user_number, "menu")
             return messages.opcao_invalida + menu_principal()
 
     if estado.startswith("final_") and any(x in estado for x in ["congresso_feiras", "speakers"]):
-        contexto = estado.replace("final_", "").replace("_", " ").title()
+        servico = estado.replace("final_", "").replace("_", " ")
         if incoming_msg == "1":
-            set_rota(user_number, f"Eventos - {contexto} - WhatsApp")
+            rota_completa = f"{servico.title().replace(' ', ' -> ')} -> Atendimento via WhatsApp"
+            set_rota(user_number, rota_completa)
             notificar_atendente(user_number)
             set_state(user_number, "convite_ia")
-            return messages.contato_whatsapp + messages.convite_ia
+            return messages.contato_whatsapp(user_number) + messages.convite_ia
         elif incoming_msg == "2":
-            set_rota(user_number, f"Eventos - {contexto} - Ligação")
+            rota_completa = f"{servico.title().replace(' ', ' -> ')} -> Ligação Comercial"
+            set_rota(user_number, rota_completa)
             notificar_atendente(user_number)
             set_state(user_number, "convite_ia")
-            return messages.contato_ligacao + messages.convite_ia
+            return messages.contato_ligacao(user_number) + messages.convite_ia
         elif incoming_msg.upper() == "VOLTAR":
             set_state(user_number, "cobertura_eventos")
             return messages.voltando_anterior + menu_cobertura_eventos()
