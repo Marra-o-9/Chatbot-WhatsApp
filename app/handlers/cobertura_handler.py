@@ -28,7 +28,8 @@ def handle(incoming_msg, user_number, estado):
             "congresso_feiras": [
                 "Cobertura de Eventos -> Congresso & Feiras -> Fotos",
                 "Cobertura de Eventos -> Congresso & Feiras -> Vídeos",
-                "Cobertura de Eventos -> Congresso & Feiras -> Cobertura completa"
+                "Cobertura de Eventos -> Congresso & Feiras -> Cobertura de Fotos + Vídeos",
+                "Cobertura de Eventos -> Congresso & Feiras -> Gestão de Redes Sociais"
             ],
             "speakers": [
                 "Cobertura de Eventos -> Speakers -> Chamada de Pré Release Digital",

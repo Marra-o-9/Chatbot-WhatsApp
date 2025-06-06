@@ -25,7 +25,8 @@ def menu_congresso_feiras():
         "🏛️ *Congresso & Feiras*\n\n"
         "1️⃣ - Fotos\n"
         "2️⃣ - Vídeos\n"
-        "3️⃣ - Cobertura completa\n\n"
+        "3️⃣ - Cobertura de Fotos + Vídeos\n"
+        "4️⃣ - Gestão de Redes Sociais\n\n"
         "Digite o número da opção ou *VOLTAR* para retornar."
     )
 
