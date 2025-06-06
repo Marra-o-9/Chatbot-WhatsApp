@@ -52,16 +52,13 @@ def handle(incoming_msg, user_number, estado):
             return messages.opcao_invalida + menu_principal()
 
     if estado.startswith("final_") and any(x in estado for x in ["congresso_feiras", "speakers"]):
-        servico = estado.replace("final_", "").replace("_", " ")
         if incoming_msg == "1":
-            rota_completa = f"{servico.title().replace(' ', ' -> ')} -> Atendimento via WhatsApp"
-            set_rota(user_number, rota_completa)
+            set_rota(user_number, "Atendimento via WhatsApp")
             notificar_atendente(user_number)
             set_state(user_number, "convite_ia")
             return messages.contato_whatsapp(user_number) + messages.convite_ia
         elif incoming_msg == "2":
-            rota_completa = f"{servico.title().replace(' ', ' -> ')} -> Ligação Comercial"
-            set_rota(user_number, rota_completa)
+            set_rota(user_number, "Ligação Comercial")
             notificar_atendente(user_number)
             set_state(user_number, "convite_ia")
             return messages.contato_ligacao(user_number) + messages.convite_ia

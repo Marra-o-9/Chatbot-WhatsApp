@@ -35,7 +35,7 @@ def notificar_atendente(user_number):
         f"📩 *Novo lead gerado!*\n\n"
         f"📱 Número: {numero_limpo}\n"
         f"🎯 Serviço: {user_info['servico']}\n"
-        f"🗺️ Rota: {user_info['rota']}\n\n"
+        f"💬 Contato: {user_info['rota']}\n\n"
         f"👉 Para iniciar a conversa com o cliente, clique no link abaixo:\n"
         f"{link_whatsapp}"
     )
